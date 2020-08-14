@@ -1,12 +1,18 @@
 /**
  * Weather App
- * TODO: Complete getWeatherData() to return json response Promise
+ * ok: Complete getWeatherData() to return json response Promise
  * TODO: Complete searchCity() to get user input and get data using getWeatherData()
  * TODO: Complete showWeatherData() to set the data in the the html file from response
  */
 
 // API_KEY for maps api
 let API_KEY = "a8e71c9932b20c4ceb0aed183e6a83bb";
+// console.log(getWeatherData('Łódź'));
+
+window.onload = function() {
+  let inputField = document.getElementById('city-input');
+  inputField.addEventListener('change', () => searchCity());
+}
 
 /**
  * Retrieve weather data from openweathermap
@@ -16,9 +22,14 @@ let API_KEY = "a8e71c9932b20c4ceb0aed183e6a83bb";
  */
 getWeatherData = (city) => {
   const URL = "https://api.openweathermap.org/data/2.5/weather";
-  //HINT: Use template literals to create a url with input and an API key
-
-  //CODE GOES HERE
+  const FULL_URL = `${URL}?q=${city}&appid=${API_KEY}&units=metric`;
+  
+  let weatherPromise = fetch(FULL_URL);
+  return weatherPromise
+    .then(response => response.json())
+    .catch(error => {
+      console.log('Wystąpił błąd: ' + error)
+    })
 }
 
 /**
@@ -27,8 +38,8 @@ getWeatherData = (city) => {
  */
 searchCity = () => {
   const city = document.getElementById('city-input').value;
-  // CODE GOES HERE
-
+  const whetherData = getWeatherData(city);
+  console.log(whetherData);
 }
 
 /**
@@ -37,6 +48,5 @@ searchCity = () => {
  */
 showWeatherData = (weatherData) => {
   //CODE GOES HERE
-  
-}
 
+}
