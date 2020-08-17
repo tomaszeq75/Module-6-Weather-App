@@ -9,7 +9,7 @@
 let API_KEY = "a8e71c9932b20c4ceb0aed183e6a83bb";
 // console.log(getWeatherData('Łódź'));
 
-window.onload = function() {
+window.onload = function () {
   let inputField = document.getElementById('city-input');
   inputField.addEventListener('change', () => searchCity());
 }
@@ -23,7 +23,7 @@ window.onload = function() {
 getWeatherData = (city) => {
   const URL = "https://api.openweathermap.org/data/2.5/weather";
   const FULL_URL = `${URL}?q=${city}&appid=${API_KEY}&units=metric`;
-  
+
   let weatherPromise = fetch(FULL_URL);
   return weatherPromise
     .then(response => response.json())
@@ -37,9 +37,13 @@ getWeatherData = (city) => {
  * HINT: Use the promise returned from getWeatherData()
  */
 searchCity = () => {
-  const city = document.getElementById('city-input').value;
-  const whetherData = getWeatherData(city);
-  console.log(whetherData);
+  city = document.getElementById('city-input').value;
+  const whetherData = getWeatherData(city)
+    .then((response) => {
+      console.log('searchCity: ');
+      console.log(response);
+      showWeatherData(response);
+    }).catch(error => console.log(error));
 }
 
 /**
@@ -48,5 +52,12 @@ searchCity = () => {
  */
 showWeatherData = (weatherData) => {
   //CODE GOES HERE
+  console.log('showWeatherData');
+  console.log(weatherData);
+  document.getElementById('city-name').innerText = '';
+  document.getElementById('weather-type').innerText = '';
+  document.getElementById('temp').innerText = '';
+  document.getElementById('min-temp').innerText = '';
+  document.getElementById('max-temp').innerText = '';
 
 }
