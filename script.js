@@ -9,6 +9,8 @@
 let API_KEY = "a8e71c9932b20c4ceb0aed183e6a83bb";
 // console.log(getWeatherData('Łódź'));
 
+let wd;
+
 window.onload = function () {
   let inputField = document.getElementById('city-input');
   inputField.addEventListener('change', () => searchCity());
@@ -24,12 +26,22 @@ getWeatherData = (city) => {
   const URL = "https://api.openweathermap.org/data/2.5/weather";
   const FULL_URL = `${URL}?q=${city}&appid=${API_KEY}&units=metric`;
 
-  let weatherPromise = fetch(FULL_URL);
-  return weatherPromise
-    .then(response => response.json())
+  let weatherPromise = fetch(FULL_URL)
+    .then(response => {
+      console.log('1 then');
+      console.log(response);
+      return response.json();
+    })
+    .then(data => {
+      console.log('2 then');
+      console.log(data);
+      showWeatherData(data);
+      // return data;
+    })
     .catch(error => {
       console.log('Wystąpił błąd: ' + error)
-    })
+    });
+    return weatherPromise;
 }
 
 /**
@@ -38,12 +50,8 @@ getWeatherData = (city) => {
  */
 searchCity = () => {
   city = document.getElementById('city-input').value;
-  const whetherData = getWeatherData(city)
-    .then((response) => {
-      console.log('searchCity: ');
-      console.log(response);
-      showWeatherData(response);
-    }).catch(error => console.log(error));
+  wd = getWeatherData(city);
+  console.log(wd);
 }
 
 /**
@@ -52,12 +60,12 @@ searchCity = () => {
  */
 showWeatherData = (weatherData) => {
   //CODE GOES HERE
-  console.log('showWeatherData');
   console.log(weatherData);
-  document.getElementById('city-name').innerText = '';
-  document.getElementById('weather-type').innerText = '';
-  document.getElementById('temp').innerText = '';
-  document.getElementById('min-temp').innerText = '';
-  document.getElementById('max-temp').innerText = '';
+  console.log();
+  document.getElementById('city-name').innerText = weatherData.name;
+  document.getElementById('weather-type').innerText = weatherData.weather[0].description;
+  document.getElementById('temp').innerText = weatherData.main.temp;
+  document.getElementById('min-temp').innerText = weatherData.main.temp_min;
+  document.getElementById('max-temp').innerText = weatherData.main.temp_max;
 
 }
