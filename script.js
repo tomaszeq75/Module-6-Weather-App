@@ -54,6 +54,11 @@ searchCity = () => {
   console.log(wd);
 }
 
+chooseCity = (city) => {
+  document.getElementById('city-input').value = city;
+  searchCity();
+}
+
 /**
  * Show the weather data in HTML
  * HINT: make sure to console log the weatherData to see how the data looks like
@@ -63,7 +68,8 @@ showWeatherData = (weatherData) => {
   console.log(weatherData);
   console.log();
   document.getElementById('city-name').innerText = weatherData.name;
-  document.getElementById('weather-type').innerText = weatherData.weather[0].description;
+  document.getElementById('weather-type').innerText = `${weatherData.weather[0].main} (${weatherData.clouds.all}%)`;
+  document.getElementById('pressure').innerText = weatherData.main.pressure;
   document.getElementById('temp').innerText = weatherData.main.temp;
   document.getElementById('min-temp').innerText = weatherData.main.temp_min;
   document.getElementById('max-temp').innerText = weatherData.main.temp_max;
